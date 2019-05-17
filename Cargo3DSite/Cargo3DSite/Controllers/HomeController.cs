@@ -13,14 +13,14 @@ namespace Cargo3DSite.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Catalogue()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Creator()
         {
             ViewBag.Message = "Your contact page.";
 

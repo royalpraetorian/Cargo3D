@@ -22,3 +22,19 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.container {
+    /*padding-top: 100px;*/
+}
+
+.navbar {
+    height: 30px;
+    /*padding-top: 100px;*/
+    background-color: blue;
+}
+
+img {
+    align-content: center;
+    width: 100px;
+    height: 100px;
+}
