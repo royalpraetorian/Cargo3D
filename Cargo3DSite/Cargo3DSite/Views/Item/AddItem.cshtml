@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "AddItem";
+}
+
+<h2>AddItem</h2>
+
+<textarea>Title</textarea>
+<textarea>Description</textarea>
+<label>Files</label>
+@using (Html.BeginForm("Uploading_validataion", "Controllers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="holder" accept="*.stl"/>
+    <br />
+    @Html.Label("Date d'expiration'")
+
+    <input type="text" id="datepicker" name="duree" />
+    <br />
+    <input type="submit" value="OK" />
+}

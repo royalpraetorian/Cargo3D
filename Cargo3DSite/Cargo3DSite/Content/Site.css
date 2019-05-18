@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     padding-bottom: 20px;
 }
 
@@ -33,8 +33,18 @@ textarea {
     background-color: blue;
 }
 
-img {
+.navbar-header img {
+    float: left;
     align-content: center;
     width: 100px;
     height: 100px;
 }
+
+.creator {
+    display: flex;
+}
+
+    .creator canvas {
+        background-color: black;
+        width: 700px;
+    }
