@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Cargo3DSite.Models
 {
-    public class _3DCreationDisplayModel
+    public class CreationDisplayModel
     {
 
         //image, title, author, description, list of files

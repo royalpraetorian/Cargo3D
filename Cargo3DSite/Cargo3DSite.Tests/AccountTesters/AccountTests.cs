@@ -91,7 +91,16 @@ namespace Cargo3DSite.Tests.Controllers
         {
             //arrange
 
+            var user = Users.First();
 
+            var item = new CreationDisplayModel()
+            {
+                ImgUrl = "",
+                Title = "Item!",
+                AuthorName = user.Email,
+                Description = "Display model test",
+                FileId = 0
+            };
 
             //act
 
