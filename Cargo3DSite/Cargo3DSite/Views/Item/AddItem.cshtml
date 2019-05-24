@@ -10,7 +10,7 @@
 <label>Files</label>
 @using (Html.BeginForm("Uploading_validataion", "Controllers", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <input type="file" name="holder" accept="*.stl"/>
+    <input type="file" name="holder" accept=".stl"/>
     <br />
     @Html.Label("Date d'expiration'")
 
