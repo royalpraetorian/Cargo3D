@@ -84,3 +84,7 @@ textarea {
 .header_box {
     position: relative;
 }
+
+html {
+    background-image: url(blueTiles.png);
+}
