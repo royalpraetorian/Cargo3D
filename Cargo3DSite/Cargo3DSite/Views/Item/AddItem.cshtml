@@ -4,17 +4,14 @@
 }
 
 <h2>AddItem</h2>
-
-<textarea>Title</textarea>
-<textarea>Description</textarea>
 <label>Files</label>
-@using (Html.BeginForm("Uploading_validataion", "Controllers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Upload", "Controllers", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <input type="file" name="holder" accept=".stl"/>
-    <br />
-    @Html.Label("Date d'expiration'")
-
-    <input type="text" id="datepicker" name="duree" />
+    <label>Item Name:</label>
+    <input type="text" id="title" />
+    <label>Description</label>
+    <input type="text" id="description" />
+    <input type="file" name="holder" accept=".stl" />
     <br />
     <input type="submit" value="OK" />
 }
