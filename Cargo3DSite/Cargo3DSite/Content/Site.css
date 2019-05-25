@@ -1,13 +1,14 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: rgba(0, 0, 0, .3);
+    background-image: url(blueTiles.png);
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    background-color: rgba(0, 0, 0, .3);
     margin-top: 110px;
 }
 
@@ -56,6 +57,7 @@ textarea {
         width: 90%;
         border: solid black 5px;
         margin: 5px 10px 0px 10px;
+        height: 90%;
     }
 
 .nav-item {
@@ -68,6 +70,7 @@ textarea {
     margin: 0px 0px 20px;
     border: 5px solid black;
     padding: 3px;
+    background-color: white;
 }
 
 #currentPage {
@@ -79,12 +82,9 @@ textarea {
 
 .fixed-top {
     margin-bottom: 0;
+    background-color: aliceblue;
 }
 
 .header_box {
     position: relative;
-}
-
-html {
-    background-image: url(blueTiles.png);
 }
