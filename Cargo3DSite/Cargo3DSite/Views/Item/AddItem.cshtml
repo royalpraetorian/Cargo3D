@@ -4,14 +4,15 @@
 }
 
 <h2>AddItem</h2>
-<label>Files</label>
-@using (Html.BeginForm("Upload", "Controllers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Upload", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <label>Item Name:</label>
     <input type="text" id="title" />
     <label>Description</label>
     <input type="text" id="description" />
+    <label>Files:</label>
     <input type="file" name="holder" accept=".stl" />
     <br />
+    <button onclick="function() {/* Adding an option*/ }">Add File</button>
     <input type="submit" value="OK" />
 }

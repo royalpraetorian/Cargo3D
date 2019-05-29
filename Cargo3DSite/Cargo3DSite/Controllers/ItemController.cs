@@ -19,5 +19,19 @@ namespace Cargo3DSite.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Upload(string title)
+        {
+            try
+            {
+                ViewData["title"] = title;
+            }catch
+            {
+
+            }
+
+            return View("AddItem");
+        }
     }
 }
