@@ -1,18 +1,36 @@
-﻿
+﻿@using Cargo3DSite.Models
+@model ItemSub
 @{
     ViewBag.Title = "AddItem";
 }
 
 <h2>AddItem</h2>
+@*@using (Html.BeginForm("Upload", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <label>Item Name:</label>
+        <input type="text" id="title" />
+        <label>Description</label>
+        <input type="text" id="description" />
+        <label>Files:</label>
+        <input type="file" name="holder" accept=".stl" />
+        <br />
+        <button onclick="function() {/* Adding an option*/ }">Add File</button>
+        <input type="submit" value="OK" />
+    }*@
+
 @using (Html.BeginForm("Upload", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <label>Item Name:</label>
-    <input type="text" id="title" />
-    <label>Description</label>
-    <input type="text" id="description" />
-    <label>Files:</label>
-    <input type="file" name="holder" accept=".stl" />
+    <label>Item Name</label>
+    @Html.TextBox("ItemName")
     <br />
-    <button onclick="function() {/* Adding an option*/ }">Add File</button>
-    <input type="submit" value="OK" />
+
+    <label>Description</label>
+    @Html.TextBox("Description")
+    <br />
+
+    <label>Files</label>
+    <input type="file" name="holder" id="file1" accept=".stl" />
+    <br />
+    <input type="submit" value="Add" />
+
 }

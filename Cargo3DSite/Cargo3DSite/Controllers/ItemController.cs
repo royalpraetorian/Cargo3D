@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Cargo3DSite.Models;
 
 namespace Cargo3DSite.Controllers
 {
@@ -21,15 +22,9 @@ namespace Cargo3DSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(string title)
+        public ActionResult Upload(ItemSub sub, HttpPostedFile file)
         {
-            try
-            {
-                ViewData["title"] = title;
-            }catch
-            {
-
-            }
+            
 
             return View("AddItem");
         }
