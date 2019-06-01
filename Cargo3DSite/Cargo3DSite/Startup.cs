@@ -70,13 +70,7 @@ namespace Cargo3DSite
             var checkUser1 = UserManager.Create(user1, userPWD1);
             var checkUser2 = UserManager.Create(user2, userPWD1);
             var checkUser3 = UserManager.Create(user3, userPWD1);
-
-            if (!(checkUser1.Succeeded && checkUser2.Succeeded && checkUser3.Succeeded))
-            {
-
-                throw new System.Exception("error adding a user! in startup.cs");
-            } else
-            {
+            
                 var resultA1 = UserManager.AddToRole(user1.Id, "Admin");
                 var resultB1 = UserManager.AddToRole(user1.Id, "user");
 
@@ -85,8 +79,7 @@ namespace Cargo3DSite
 
                 var resultA3 = UserManager.AddToRole(user3.Id, "Admin");
                 var resultB3 = UserManager.AddToRole(user3.Id, "user");
-            }
-
+            
         }
     }
 }
