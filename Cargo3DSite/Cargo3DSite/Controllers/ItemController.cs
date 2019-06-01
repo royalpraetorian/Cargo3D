@@ -26,7 +26,8 @@ namespace Cargo3DSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                HttpFileCollectionBase files = Request.Files;
+                //HttpFileCollectionBase files = Request.Files;
+                int s = sub.AllFiles.ContentLength;
             }
             return View("AddItem");
         }

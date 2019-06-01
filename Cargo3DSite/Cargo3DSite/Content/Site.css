@@ -1,14 +1,14 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-image: url(blueTiles.png);
+    background-image: url(NewBackground.png);
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(143, 224, 242, .3);
     margin-top: 110px;
 }
 
@@ -31,7 +31,7 @@ textarea {
     box-shadow: 0 5px 5px -2px rgba(0,0,0,.2);
     margin-top: 110px;
     text-align: center;
-    background-color: #a1f298;
+    background-color: #a1f298 !important;
 }
 
 #cargoLogo {
@@ -39,7 +39,7 @@ textarea {
     right: 50%;
     width: 75px;
     height: 75px;
-    background-color: gray;
+    background-color: darkblue;
     border-radius: 50px;
     border: #6fbf69 solid 2px;
 }
@@ -66,12 +66,12 @@ textarea {
 }
 
 .login {
-    height: 85px;
+    height: 80px;
     float: right;
     margin: 0px 0px 20px;
     border: 5px solid #6fbf69;
     padding: 3px;
-    background-color: white;
+    background-color: #c3ffff;
 }
 
 #currentPage {
