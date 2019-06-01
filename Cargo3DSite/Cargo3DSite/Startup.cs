@@ -37,6 +37,8 @@ namespace Cargo3DSite
                 user.UserName = "Jett@Tripp.net";
                 user.Email = "Jett@Tripp.net";
 
+
+
                 string userPWD = "Cargo3D";
 
                 var chkUser = UserManager.Create(user, userPWD);
@@ -47,15 +49,44 @@ namespace Cargo3DSite
                     var result1 = UserManager.AddToRole(user.Id, "Admin");
                     var result2 = UserManager.AddToRole(user.Id, "user");
                 }
-
-
-                if (UserManager.GetEmail("Jett@Tripp.net").Equals(null))
-                {
-                    var checkUser = UserManager.Create(user, userPWD);
-
-
-                }
+                
             }
+
+            string userPWD1 = "Cargo3D";
+
+            var user1 = new ApplicationUser();
+            user1.UserName = "Chris@Ellis.net";
+            user1.Email = "Chris@Ellis.net";
+
+            var user2 = new ApplicationUser();
+            user2.UserName = "Richard@Sanchez.net";
+            user2.Email = "Richard@Sanchez.net";
+
+            var user3 = new ApplicationUser();
+            user3.UserName = "Nick@Hurst.net";
+            user3.Email = "Nick@Hurst.net";
+
+
+            var checkUser1 = UserManager.Create(user1, userPWD1);
+            var checkUser2 = UserManager.Create(user2, userPWD1);
+            var checkUser3 = UserManager.Create(user3, userPWD1);
+
+            if (!(checkUser1.Succeeded && checkUser2.Succeeded && checkUser3.Succeeded))
+            {
+
+                throw new System.Exception("error adding a user! in startup.cs");
+            } else
+            {
+                var resultA1 = UserManager.AddToRole(user1.Id, "Admin");
+                var resultB1 = UserManager.AddToRole(user1.Id, "user");
+
+                var resultA2 = UserManager.AddToRole(user2.Id, "Admin");
+                var resultB2 = UserManager.AddToRole(user2.Id, "user");
+
+                var resultA3 = UserManager.AddToRole(user3.Id, "Admin");
+                var resultB3 = UserManager.AddToRole(user3.Id, "user");
+            }
+
         }
     }
 }

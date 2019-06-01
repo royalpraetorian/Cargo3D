@@ -20,9 +20,10 @@ namespace Cargo3DSite.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User")]
         public ActionResult Creator()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "";
 
             return View();
         }
