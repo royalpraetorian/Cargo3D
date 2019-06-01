@@ -22,10 +22,12 @@ namespace Cargo3DSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(ItemSub sub, HttpPostedFile file)
+        public ActionResult Upload([Bind(Include = "ItemName,Description,AllFiles")] ItemSub sub)
         {
-            
-
+            if (ModelState.IsValid)
+            {
+                HttpFileCollectionBase files = Request.Files;
+            }
             return View("AddItem");
         }
     }

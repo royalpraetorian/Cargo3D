@@ -10,6 +10,6 @@ namespace Cargo3DSite.Models
     {
         public String ItemName { get; set; }
         public String Description { get; set; }
-        public List<String> FileNames { get; set; }
+        public HttpFileCollectionBase AllFiles { get; set; }
     }
 }

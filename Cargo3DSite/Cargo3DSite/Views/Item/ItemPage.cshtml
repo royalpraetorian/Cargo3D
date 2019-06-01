@@ -3,194 +3,209 @@
     ViewBag.Title = "ItemPage";
 }
 @*https://filebin.net/dg1a7cewqsmqss1c/1test.stl?t=3988d68y*@
-<script src="three.js"></script>
 
-<script src="STLLoader.js"></script>
+<h2>ItemPage</h2>
+<div id="itemView"></div>
+<script src="~/Scripts/three.js"></script>
 
-<script src="WebGL.js"></script>
-<script src="stats.min.js"></script>
-<script src="OrbitControls.js"></script>
+<script src="~/Scripts/STLLoader.js"></script>
+
+<script src="~/Scripts/WebGL.js"></script>
+<script src="~/Scripts/stats.min.js"></script>
+<script src="~/Scripts/OrbitControls.js"></script>
+<script src="~/Scripts/Fog.js"></script>
 <script>
 
-			if ( WEBGL.isWebGLAvailable() === false ) {
+    if (WEBGL.isWebGLAvailable() === false) {
 
-				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+        document.body.appendChild(WEBGL.getWebGLErrorMessage());
 
-			}
+    }
 
-			var container, stats, box, mesh;
+    var container, stats, box, mesh;
 
-			var camera, cameraTarget, scene, renderer;
+    var camera, cameraTarget, scene, renderer;
 
-			init();
-			animate();
+    init();
+    animate();
 
-			function init() {
+    function init() {
+        container = document.getElementById("itemView");
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+        camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 150);
+        camera.position.set(3, 0.15, 3);
 
-				camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 150 );
-				camera.position.set( 3, 0.15, 3 );
+        cameraTarget = new THREE.Vector3(0, - 0.25, 0);
 
-				cameraTarget = new THREE.Vector3( 0, - 0.25, 0 );
+        scene = new THREE.Scene();
 
-				scene = new THREE.Scene();
+        // Ground
 
-				// Ground
 
 
+        // ASCII file
 
-				// ASCII file
+        var loader = new THREE.STLLoader();
 
-				var loader = new THREE.STLLoader();
 
+        // Binary files
 
-				// Binary files
+        var material = new THREE.MeshPhongMaterial({ color: 0xAAAAAA, specular: 0x111111, shininess: 200 });
+        loader.load('https://filebin.net/dg1a7cewqsmqss1c/1test.stl?t=3988d68y', function (geometry) {
 
-				var material = new THREE.MeshPhongMaterial( { color: 0xAAAAAA, specular: 0x111111, shininess: 200 } );
+            mesh = new THREE.Mesh(geometry, material);
 
-                loader.load( 'https://filebin.net/dg1a7cewqsmqss1c/1test.stl?t=3988d68y', function ( geometry ) {
+            mesh.rotation.set(- Math.PI / 2, 0, 0);
+            mesh.scale.set(.1, .1, .1);
 
-					mesh = new THREE.Mesh( geometry, material );
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
 
-					mesh.rotation.set( - Math.PI / 2, 0, 0 );
-					mesh.scale.set( .1, .1, .1 );
+            box = new THREE.Box3().setFromObject(mesh);
+            mesh.position.set(0, Math.abs(box.min.y), 0);
+            scene.add(mesh);
 
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
+        });
 
-					box = new THREE.Box3().setFromObject( mesh );
-					mesh.position.set( 0, Math.abs(box.min.y), 0 );
-					scene.add( mesh );
 
-				} );
 
+        // Colored binary STL
 
 
-				// Colored binary STL
+        // Lights
 
+        scene.add(new THREE.HemisphereLight(0x443333, 0x111122));
 
-				// Lights
+        addShadowedLight(1, 1, 1, 0xffffff, 1.35);
+        addShadowedLight(0.5, 1, - 1, 0xffaa00, 1);
+        // renderer
 
-				scene.add( new THREE.HemisphereLight( 0x443333, 0x111122 ) );
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(container.offsetWidth, 400);
 
-				addShadowedLight( 1, 1, 1, 0xffffff, 1.35 );
-				addShadowedLight( 0.5, 1, - 1, 0xffaa00, 1 );
-				// renderer
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
 
-				renderer = new THREE.WebGLRenderer( { antialias: true,alpha: true} );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.shadowMap.enabled = true;
 
-				renderer.gammaInput = true;
-				renderer.gammaOutput = true;
+        container.appendChild(renderer.domElement);
 
-				renderer.shadowMap.enabled = true;
+        // stats
 
-				container.appendChild( renderer.domElement );
+        stats = new Stats();
+        container.appendChild(stats.dom);
 
-				// stats
+        //
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+        window.addEventListener('resize', onWindowResize, false);
 
-				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+        var size = 1000;
+        var divisions = 3000;
 
+        var gridHelper = new THREE.GridHelper(size, divisions);
+        scene.add(gridHelper)
 
-var size = 1000;
-var divisions = 3000;
 
-var gridHelper = new THREE.GridHelper( size, divisions );
-scene.add( gridHelper )
+        renderer.setClearColor(0xffffff, 1);
+        //fog
+        const color = 0xFFFFFF;  // white
+        const near = 10;
+        const far = 100;
+        scene.fog = new THREE.Fog(color, near, far);
 
+    }
 
+    function addShadowedLight(x, y, z, color, intensity) {
 
+        var directionalLight = new THREE.DirectionalLight(color, intensity);
+        directionalLight.position.set(x, y, z);
+        scene.add(directionalLight);
 
-			}
+        directionalLight.castShadow = true;
 
-			function addShadowedLight( x, y, z, color, intensity ) {
+        var d = 1;
+        directionalLight.shadow.camera.left = - d;
+        directionalLight.shadow.camera.right = d;
+        directionalLight.shadow.camera.top = d;
+        directionalLight.shadow.camera.bottom = - d;
 
-				var directionalLight = new THREE.DirectionalLight( color, intensity );
-				directionalLight.position.set( x, y, z );
-				scene.add( directionalLight );
+        directionalLight.shadow.camera.near = 1;
+        directionalLight.shadow.camera.far = 4;
 
-				directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 1024;
+        directionalLight.shadow.mapSize.height = 1024;
 
-				var d = 1;
-				directionalLight.shadow.camera.left = - d;
-				directionalLight.shadow.camera.right = d;
-				directionalLight.shadow.camera.top = d;
-				directionalLight.shadow.camera.bottom = - d;
+        directionalLight.shadow.bias = - 0.002;
 
-				directionalLight.shadow.camera.near = 1;
-				directionalLight.shadow.camera.far = 4;
+    }
 
-				directionalLight.shadow.mapSize.width = 1024;
-				directionalLight.shadow.mapSize.height = 1024;
+    function onWindowResize() {
 
-				directionalLight.shadow.bias = - 0.002;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
-			}
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-			function onWindowResize() {
+    }
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+    function animate() {
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+        requestAnimationFrame(animate);
 
-			}
+        render();
+        stats.update();
 
-			function animate() {
+    }
 
-				requestAnimationFrame( animate );
+    function render() {
 
-				render();
-				stats.update();
+        var timer = Date.now() * 0.0005;
 
-			}
 
-			function render() {
+        camera.lookAt(cameraTarget);
 
-				var timer = Date.now() * 0.0005;
+        renderer.render(scene, camera);
 
+    }
 
-				camera.lookAt( cameraTarget );
-
-				renderer.render( scene, camera );
-
-			}
-
-
-
-
-var mousewheel  = function ( e ) {
-     var d = ((typeof e.wheelDelta != "undefined")?(-e.wheelDelta):e.detail);
-     d = 100 * ((d>0)?1:-1);
-     var cPos = camera.position;
-     if (isNaN(cPos.x) || isNaN(cPos.y) || isNaN(cPos.y)) return;
+    var mousewheel = function (e) {
+        var d = ((typeof e.wheelDelta != "undefined") ? (-e.wheelDelta) : e.detail);
+        d = 100 * ((d > 0) ? 1 : -1);
+        var cPos = camera.position;
+        if (isNaN(cPos.x) || isNaN(cPos.y) || isNaN(cPos.y)) return;
 
         // Your zomm limitation
         // For X axe you can add anothers limits for Y / Z axes
 
 
-   mb = d>0 ? 1.1 : 0.9;
-   cPos.x = cPos.x * mb;
-   cPos.y = cPos.y * mb;
-   cPos.z = cPos.z * mb;
-}
+        mb = d > 0 ? 1.1 : 0.9;
+        cPos.x = cPos.x * mb;
+        cPos.y = cPos.y * mb;
+        cPos.z = cPos.z * mb;
+    }
 
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
 
-document.body.addEventListener( 'mousewheel', mousewheel, false );
-document.body.addEventListener( 'DOMMouseScroll', mousewheel, false ); // firefox
-controls = new THREE.OrbitControls( camera, renderer.domElement );
+    document.body.addEventListener('mousewheel', mousewheel, false);
+    document.body.addEventListener('DOMMouseScroll', mousewheel, false); // firefox
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 </script>
 
-
-
-<h2>ItemPage</h2>
 
