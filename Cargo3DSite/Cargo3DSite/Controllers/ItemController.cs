@@ -4,13 +4,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Cargo3DSite.Models;
+using MongoDB.Driver;
 
 namespace Cargo3DSite.Controllers
 {
     public class ItemController : Controller
     {
-        // GET: Item
-        public ActionResult Index()
+
+		public string ConnectionString { get; set; } = "mongodb://dbAdmin:thisisapasswordsubjecttochange1@fairlymanaged.com";
+		public MongoClient Client { get; set; }
+										   // GET: Item
+		public ActionResult Index()
         {
             return View();
         }
@@ -31,5 +35,20 @@ namespace Cargo3DSite.Controllers
             }
             return View("AddItem");
         }
-    }
+
+		public void InsertRecord(STLFile file)
+		{
+			//Connect to MongoDB
+			Client = new MongoClient(ConnectionString);
+			var DB = Client.GetDatabase("CargoItems");
+			var Collection = DB.GetCollection<STLFile>("STLFiles");
+			//Insert the file.
+			Collection.InsertOne(file);
+		}
+
+		public void GetFile(string fileName)
+		{
+
+		}
+	}
 }
