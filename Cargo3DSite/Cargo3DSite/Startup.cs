@@ -78,9 +78,7 @@ namespace Cargo3DSite
                     var result2 = UserManager.AddToRole(user.Id, "user");
                 }
                 
-            }
-
-            
+            } 
         }
     }
 }

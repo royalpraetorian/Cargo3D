@@ -1,6 +1,7 @@
 ﻿using System.IO;
 
-namespace Cargo3DSite.Controllers
+namespace Cargo3DSite.Models
+
 {
 	using GenericStl;
 	using System;
