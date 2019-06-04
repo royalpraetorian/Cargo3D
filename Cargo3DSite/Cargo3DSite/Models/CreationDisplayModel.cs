@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +15,6 @@ namespace Cargo3DSite.Models
         public String Title { get; set; }
         public String AuthorName { get; set; }
         public String Description { get; set; }
-        public int FileId { get; set; }
-
+        public STLFile File { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cargo3DSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,11 @@ namespace Cargo3DSite.Controllers
 {
     public class HomeController : Controller
     {
+
+
+        CatalogModel CM = new CatalogModel();
+
+
         public ActionResult Index()
         {
             return View();
