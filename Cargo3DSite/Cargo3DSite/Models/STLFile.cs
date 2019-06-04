@@ -10,10 +10,10 @@ namespace Cargo3DSite.Controllers
 	{
         public ObjectId _id{ get; set; }
         public string FileName { get; set; }
-		public string STL { get; set; }
+		public byte[] STL { get; set; }
 		public string UserID { get; set; }
 
-		public STLFile(string fileName, string data, string userID)
+		public STLFile(string fileName, byte[] data, string userID)
 		{
             FileName = fileName;
             STL = data;

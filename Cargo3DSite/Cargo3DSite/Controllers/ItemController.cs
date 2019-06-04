@@ -13,10 +13,10 @@ namespace Cargo3DSite.Controllers
     public class ItemController : Controller
     {
 
-		public string ConnectionString { get; set; } = "mongodb://dbAdmin:thisisapasswordsubjecttochange1@fairlymanaged.com";
-		public MongoClient Client { get; set; }
-										   // GET: Item
-		public ActionResult Index()
+        public string ConnectionString { get; set; } = "mongodb://dbAdmin:thisisapasswordsubjecttochange1@fairlymanaged.com";
+        public MongoClient Client { get; set; }
+        // GET: Item
+        public ActionResult Index()
         {
             return View();
         }
@@ -41,33 +41,43 @@ namespace Cargo3DSite.Controllers
                 int s = sub.AllFiles.ContentLength;
                 //Construct the STLFile object from submited data
                 string fileName = sub.AllFiles.FileName;
-                string data;
+                byte[] data;
                 //Grab data from stream
                 var inputStream = sub.AllFiles.InputStream;
-                data = new StreamReader(inputStream).ReadToEnd();
+                data = Encoding.ASCII.GetBytes(new StreamReader(inputStream).ReadToEnd());
                 STLFile item = new STLFile(fileName, data, User.Identity.Name);
                 InsertRecord(item);
             }
             return View("AddItem");
         }
 
-		public void InsertRecord(STLFile file)
-		{
-			//Connect to MongoDB
-			Client = new MongoClient(ConnectionString);
-			var DB = Client.GetDatabase("CargoItems");
-			var Collection = DB.GetCollection<STLFile>("STLFiles");
-			//Insert the file.
-			Collection.InsertOne(file);
-		}
+        public void InsertRecord(STLFile file)
+        {
+            //Connect to MongoDB
+            Client = new MongoClient(ConnectionString);
+            var DB = Client.GetDatabase("CargoItems");
+            var Collection = DB.GetCollection<STLFile>("STLFiles");
+            //Insert the file.
+            Collection.InsertOne(file);
+        }
 
-		public STLFile GetFile(string fileName)
-		{
+        public STLFile GetFile(string fileName)
+        {
             Client = new MongoClient(ConnectionString);
             var DB = Client.GetDatabase("CargoItems");
             var Collection = DB.GetCollection<STLFile>("STLFiles");
             STLFile file = Collection.Find(x => x.FileName == fileName).FirstOrDefault();
+            //Test
+
+            FileStream testFile = new FileStream("testerr.stl", FileMode.Create);
+            foreach (byte b in file.STL)
+            {
+                testFile.WriteByte(b);
+                testFile.Position++;
+            }
+
+
             return file;
-		}
-	}
+        }
+    }
 }
