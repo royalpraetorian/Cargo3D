@@ -3,17 +3,21 @@
 namespace Cargo3DSite.Controllers
 {
 	using GenericStl;
-	using System;
+    using MongoDB.Bson;
+    using System;
 
 	public class STLFile
 	{
-		public string FileName { get; set; }
+        public ObjectId _id{ get; set; }
+        public string FileName { get; set; }
 		public string STL { get; set; }
-		public Guid UserID { get; set; }
+		public string UserID { get; set; }
 
-		public STLFile()
+		public STLFile(string fileName, string data, string userID)
 		{
-			
+            FileName = fileName;
+            STL = data;
+            UserID = userID;
 		}
 	}
 }
