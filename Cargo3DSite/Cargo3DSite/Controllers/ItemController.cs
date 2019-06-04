@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Cargo3DSite.Models;
@@ -18,6 +20,11 @@ namespace Cargo3DSite.Controllers
         {
             return View();
         }
+
+        public ActionResult ItemPage()
+        {
+            return View();
+        }
         public ActionResult AddItem()
         {
             ViewBag.Message = "Adding an item.";
@@ -32,6 +39,14 @@ namespace Cargo3DSite.Controllers
             {
                 //HttpFileCollectionBase files = Request.Files;
                 int s = sub.AllFiles.ContentLength;
+                //Construct the STLFile object from submited data
+                string fileName = sub.AllFiles.FileName;
+                string data;
+                //Grab data from stream
+                var inputStream = sub.AllFiles.InputStream;
+                data = new StreamReader(inputStream).ReadToEnd();
+                STLFile item = new STLFile(fileName, data, User.Identity.Name);
+                InsertRecord(item);
             }
             return View("AddItem");
         }
@@ -46,9 +61,13 @@ namespace Cargo3DSite.Controllers
 			Collection.InsertOne(file);
 		}
 
-		public void GetFile(string fileName)
+		public STLFile GetFile(string fileName)
 		{
-
+            Client = new MongoClient(ConnectionString);
+            var DB = Client.GetDatabase("CargoItems");
+            var Collection = DB.GetCollection<STLFile>("STLFiles");
+            STLFile file = Collection.Find(x => x.FileName == fileName).FirstOrDefault();
+            return file;
 		}
 	}
 }
