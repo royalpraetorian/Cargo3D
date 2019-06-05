@@ -250,6 +250,7 @@
     <Content Include="Scripts\NormalControls.js" />
     <Content Include="Scripts\OrbitControls.js" />
     <Content Include="Scripts\stats.min.js" />
+    <Content Include="Scripts\STLExporter.js" />
     <Content Include="Scripts\STLLoader.js" />
     <Content Include="Scripts\Thingiview.js" />
     <Content Include="Scripts\three.js" />

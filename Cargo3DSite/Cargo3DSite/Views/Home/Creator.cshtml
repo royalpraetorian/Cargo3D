@@ -6,10 +6,318 @@
     <div class="controls">
         @*//controls here*@
         Controls
+        <button href="#" onClick="function swap(){ isCube = !isCube;  } swap(); return false;">Swap the shapes</button>
+        <button href="#" onClick="function clear(){ clearShape = true;  } clear(); return false;">Clear</button>
     </div>
-    <canvas></canvas>
+    <div class="creator-control" id="creator"></div>
     <div class="options">
         @*//options here*@
         Options
+
+        <button onclick="exportASCII()">export ASCII</button> <button onclick="exportBinary()">export binary</button>
     </div>
+
+    <script src="~/Scripts/three.js"></script>
+    <script src="~/Scripts/STLLoader.js"></script>
+    <script src="~/Scripts/WebGL.js"></script>
+    <script src="~/Scripts/stats.min.js"></script>
+    <script src="~/Scripts/OrbitControls.js"></script>
+    <script src="~/Scripts/STLExporter.js"></script>
+    <script>
+
+        var isCube = true;
+        var clearShape = false;
+        var mouse = new THREE.Vector2(), INTERSECTED;
+        var container, stats, box, exporter, mesh;
+
+        var camera, cameraTarget, scene, raycaster, renderer;
+
+        init();
+        animate();
+        function clear() {
+            for (var i = 0; i < scene.children.length; i++) {
+                if (scene.children[i] instanceof THREE.Mesh)
+                    scene.remove(scene.getObjectById(scene.children[i].id));
+            }
+        }
+        function init() {
+
+            exporter = new THREE.STLExporter();
+            raycaster = new THREE.Raycaster();
+            container = document.getElementById("creator");
+
+            camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 150);
+            camera.position.set(3, 0.15, 3);
+
+            cameraTarget = new THREE.Vector3(0, - 0.25, 0);
+
+            scene = new THREE.Scene();
+
+            // Ground
+
+
+
+            // ASCII file
+
+            var loader = new THREE.STLLoader();
+
+
+            // Binary files
+
+
+
+            // Colored binary STL
+
+
+            // Lights
+
+            scene.add(new THREE.HemisphereLight(0x443333, 0x111122));
+
+            addShadowedLight(1, 1, 1, 0xffffff, 1.35);
+            addShadowedLight(0.5, 1, - 1, 0xffaa00, 1);
+            // renderer
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            renderer.gammaInput = true;
+            renderer.gammaOutput = true;
+
+            renderer.shadowMap.enabled = true;
+
+            container.appendChild(renderer.domElement);
+
+            // stats
+
+            stats = new Stats();
+            container.appendChild(stats.dom);
+
+            //
+
+            window.addEventListener('resize', onWindowResize, false);
+
+
+            var size = 1000;
+            var divisions = 3000;
+
+            var gridHelper = new THREE.GridHelper(size, divisions);
+            scene.add(gridHelper)
+
+
+
+
+        }
+
+        function addShadowedLight(x, y, z, color, intensity) {
+
+            var directionalLight = new THREE.DirectionalLight(color, intensity);
+            directionalLight.position.set(x, y, z);
+            scene.add(directionalLight);
+
+            directionalLight.castShadow = true;
+
+            var d = 1;
+            directionalLight.shadow.camera.left = - d;
+            directionalLight.shadow.camera.right = d;
+            directionalLight.shadow.camera.top = d;
+            directionalLight.shadow.camera.bottom = - d;
+
+            directionalLight.shadow.camera.near = 1;
+            directionalLight.shadow.camera.far = 4;
+
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
+
+            directionalLight.shadow.bias = - 0.002;
+
+        }
+
+        function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+        }
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            render();
+            stats.update();
+
+        }
+        var mousePos
+        function render() {
+
+            var timer = Date.now() * 0.0005;
+
+
+            camera.lookAt(cameraTarget);
+
+            renderer.render(scene, camera);
+
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObjects(scene.children);
+            if (intersects.length > 0) {
+                var first = true
+                for (var i = 0; i < intersects.length; i++) {
+                    if (intersects[i].object instanceof THREE.Mesh)
+                        if (first) {
+                            console.log(intersects[i].object);
+                            first = false;
+                            mousePos = intersects[i].point
+                        }
+                }
+                if (first)
+                    mousePos = intersects[0].point;
+                //console.log(mousePos);
+
+
+            }
+
+
+
+            if (clearShape) {
+                clear();
+                clearShape = false;
+            }
+
+
+
+
+        }
+        var el = container;
+        //el.addEventListener("click", addCube, false);
+        function onDocumentMouseMove(event) {
+            event.preventDefault();
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+        }
+        var rotationX = 0;
+        var rotationY = 0;
+        var current
+        function addCube(x, y, z) {
+            scene.remove(current);
+            var geometry = new THREE.BoxGeometry(x, y, z);
+            var material = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+            var obj = new THREE.Mesh(geometry, material);
+            obj.rotation.x += rotationX;
+            obj.rotation.y += rotationY;
+            obj.position.x = mousePos1.x;
+            obj.position.y = mousePos1.y;
+            obj.position.z = mousePos1.z;
+            scene.add(obj);
+            current = obj;
+            rotationX += .1;
+
+        }
+
+        function addSphere(x) {
+            scene.remove(current);
+            var geometry = new THREE.SphereGeometry(x, 20, 20);
+            var material = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+            var obj = new THREE.Mesh(geometry, material);
+            obj.position.x = mousePos1.x;
+            obj.position.y = mousePos1.y;
+            obj.position.z = mousePos1.z;
+            scene.add(obj);
+            current = obj;
+
+        }
+
+
+        var mousewheel = function (e) {
+            var d = ((typeof e.wheelDelta != "undefined") ? (-e.wheelDelta) : e.detail);
+            d = 100 * ((d > 0) ? 1 : -1);
+            var cPos = camera.position;
+            if (isNaN(cPos.x) || isNaN(cPos.y) || isNaN(cPos.y)) return;
+
+            // Your zomm limitation
+            // For X axe you can add anothers limits for Y / Z axes
+
+
+            mb = d > 0 ? 1.1 : 0.9;
+            cPos.x = cPos.x * mb;
+            cPos.y = cPos.y * mb;
+            cPos.z = cPos.z * mb;
+        }
+
+
+        document.body.addEventListener('mousemove', onDocumentMouseMove);
+        document.body.addEventListener('mousewheel', mousewheel, false);
+        document.body.addEventListener('DOMMouseScroll', mousewheel, false); // firefox
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+        function exportASCII() {
+            var result = exporter.parse(scene);
+            saveString(result, 'box.stl');
+        }
+        function exportBinary() {
+            var result = exporter.parse(scene, { binary: true });
+            saveArrayBuffer(result, 'box.stl');
+        }
+        var link = document.createElement('a');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        function save(blob, filename) {
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+        function saveString(text, filename) {
+            save(new Blob([text], { type: 'text/plain' }), filename);
+        }
+        function saveArrayBuffer(buffer, filename) {
+            save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
+        }
+
+
+
+
+
+
+        var mousedownID = -1;  //Global ID of mouse down interval
+        function mousedown(event) {
+            if (mousedownID == -1)  //Prevent multimple loops!
+                if (event.button == 2) {
+                    mousePos1 = mousePos;
+                    mousedownID = setInterval(whilemousedown, 100 /*execute every 100ms*/);
+                }
+        }
+        function mouseup(event) {
+            if (mousedownID != -1) {  //Only stop if exists
+                clearInterval(mousedownID);
+                mousedownID = -1;
+                num = 0;
+                current = null;
+            }
+
+        }
+        var num = 0;
+        var mousePos1;
+        function whilemousedown() {
+            /*here put your code*/
+            console.log(num);
+            num = num + .05;
+            //Cube
+            if (isCube) {
+                addCube(num, num, num);
+            } else {
+                addSphere(num);
+            }
+            //Sphere
+
+        }
+        //Assign events
+        document.addEventListener("mousedown", mousedown);
+        document.addEventListener("mouseup", mouseup);
+        //Also clear the interval when user leaves the window with mouse
+        document.addEventListener("mouseout", mouseup);
+
+    </script>
 </div>
