@@ -69,11 +69,11 @@ namespace Cargo3DSite.Controllers
             STLFile file = Collection.Find(x => x.FileName == fileName).FirstOrDefault();
             //Test
 
-            FileStream testFile = new FileStream("testerr.stl", FileMode.Create);
+            FileStream testFile = new FileStream("C:\\Fun\\testerr3.stl", FileMode.Create);
             foreach (byte b in file.STL)
             {
                 testFile.WriteByte(b);
-                testFile.Position++;
+                testFile.Seek(0, SeekOrigin.Current);
             }
 
 

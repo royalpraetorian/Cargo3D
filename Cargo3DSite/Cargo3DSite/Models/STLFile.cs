@@ -19,6 +19,7 @@ namespace Cargo3DSite.Models
             FileName = fileName;
             STL = data;
             UserID = userID;
+            QuantumConcepts.Formats.StereoLithography.STLDocument document = new QuantumConcepts.Formats.StereoLithography.STLDocument();
 		}
 	}
 }
