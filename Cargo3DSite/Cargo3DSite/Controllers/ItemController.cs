@@ -21,9 +21,9 @@ namespace Cargo3DSite.Controllers
             return View();
         }
 
-        public ActionResult ItemPage()
+        public ActionResult ItemPage(STLFile temp)
         {
-            return View();
+            return View(temp);
         }
         public ActionResult AddItem()
         {
@@ -78,6 +78,13 @@ namespace Cargo3DSite.Controllers
 
 
             return file;
+        }
+        public string[] GetCatalog()
+        {
+            Client = new MongoClient(ConnectionString);
+            var DB = Client.GetDatabase("CargoItems");
+            var Collection = DB.GetCollection<STLFile>("STLFiles");
+            return Collection.AsQueryable().Select(x=>x.FileName).ToArray();
         }
     }
 }
