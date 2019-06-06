@@ -6,6 +6,7 @@
 
 <h2>ItemPage</h2>
 <p>@Model.FileName</p>
+@Html.ActionLink("Download", "DownloadItem", "Item", new { fileName = Model.FileName }, null)
 <div id="itemView"></div>
 <script src="~/Scripts/three.js"></script>
 

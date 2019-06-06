@@ -51,6 +51,12 @@ namespace Cargo3DSite.Controllers
             return View("AddItem");
         }
 
+        public ActionResult DownloadItem(string fileName)
+        {
+            STLFile returner = GetFile(fileName);
+            return RedirectToAction("ItemPage");
+        }
+
         public void InsertRecord(STLFile file)
         {
             //Connect to MongoDB
@@ -69,7 +75,7 @@ namespace Cargo3DSite.Controllers
             STLFile file = Collection.Find(x => x.FileName == fileName).FirstOrDefault();
             //Test
 
-            FileStream testFile = new FileStream("C:\\Fun\\testerr3.stl", FileMode.Create);
+            FileStream testFile = new FileStream("C:\\Fun\\CargoTest.stl", FileMode.Create);
             foreach (byte b in file.STL)
             {
                 testFile.WriteByte(b);
@@ -84,7 +90,7 @@ namespace Cargo3DSite.Controllers
             Client = new MongoClient(ConnectionString);
             var DB = Client.GetDatabase("CargoItems");
             var Collection = DB.GetCollection<STLFile>("STLFiles");
-            return Collection.AsQueryable().Select(x=>x.FileName).ToArray();
+            return Collection.AsQueryable().Select(x => x.FileName).ToArray();
         }
     }
 }
