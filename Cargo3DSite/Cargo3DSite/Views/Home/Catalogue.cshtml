@@ -4,3 +4,11 @@
 
 @*//foreach item in the list of items we'll put in a card here*@
 
+@{
+    string[] names = new Cargo3DSite.Controllers.ItemController().GetCatalog();
+    foreach (string name in names)
+    {
+        @Html.ActionLink(name, "ItemPage", "Item", new { fileName = name }, null)
+    }
+}
+

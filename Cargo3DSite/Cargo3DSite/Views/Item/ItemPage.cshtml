@@ -1,10 +1,11 @@
-﻿
+﻿@model Cargo3DSite.Models.STLFile
 @{
     ViewBag.Title = "ItemPage";
 }
 @*https://filebin.net/dg1a7cewqsmqss1c/1test.stl?t=3988d68y*@
 
 <h2>ItemPage</h2>
+<p>@Model.FileName</p>
 <div id="itemView"></div>
 <script src="~/Scripts/three.js"></script>
 
@@ -29,8 +30,8 @@
     init();
     animate();
 
-        function init() {
-            container = document.getElementById("itemView");
+    function init() {
+        container = document.getElementById("itemView");
 
         camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 150);
         camera.position.set(3, 0.15, 3);

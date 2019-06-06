@@ -21,9 +21,9 @@ namespace Cargo3DSite.Controllers
             return View();
         }
 
-        public ActionResult ItemPage()
+        public ActionResult ItemPage(STLFile temp)
         {
-            return View();
+            return View(temp);
         }
         public ActionResult AddItem()
         {
@@ -69,15 +69,22 @@ namespace Cargo3DSite.Controllers
             STLFile file = Collection.Find(x => x.FileName == fileName).FirstOrDefault();
             //Test
 
-            FileStream testFile = new FileStream("testerr.stl", FileMode.Create);
+            FileStream testFile = new FileStream("C:\\Fun\\testerr3.stl", FileMode.Create);
             foreach (byte b in file.STL)
             {
                 testFile.WriteByte(b);
-                testFile.Position++;
+                testFile.Seek(0, SeekOrigin.Current);
             }
 
 
             return file;
+        }
+        public string[] GetCatalog()
+        {
+            Client = new MongoClient(ConnectionString);
+            var DB = Client.GetDatabase("CargoItems");
+            var Collection = DB.GetCollection<STLFile>("STLFiles");
+            return Collection.AsQueryable().Select(x=>x.FileName).ToArray();
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Cargo3DSite.Models
 		public byte[] STL { get; set; }
 		public string UserID { get; set; }
 
+        public STLFile() { }
+
 		public STLFile(string fileName, byte[] data, string userID)
 		{
             FileName = fileName;
